@@ -10,6 +10,23 @@ python3 -m http.server 8000 --directory site
 
 Or in GitHub Codespaces: the devcontainer starts this server automatically on **port 8000**.
 
+## Deploy to Cloudflare Pages
+
+This is a plain static site — no build step. The deploy output directory is `site/`.
+
+**Dashboard (Git integration):**
+1. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git.
+2. Pick this repo. Build command: *(leave empty)*. Build output directory: `site`.
+3. Save and deploy. `site/_redirects` and `site/_headers` are picked up automatically.
+
+**CLI (no install):**
+```bash
+npx wrangler pages deploy site
+```
+
+`wrangler.toml` at the repo root pins the project name and `pages_build_output_dir`, so both
+paths agree on `site/` as the root.
+
 ## Structure
 
 Everything served lives in `site/`.
