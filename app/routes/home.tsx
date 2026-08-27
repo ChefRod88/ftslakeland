@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
 import { images } from "~/data/site";
+import { programs } from "~/data/programs";
+import { markBold, timeline } from "~/data/timeline";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -142,46 +144,15 @@ export default function Home() {
             </p>
           </div>
           <div className="prog-list">
-            {[
-              {
-                track: "Foundational",
-                name: "Adult Bible Studies",
-                desc: "For church members who want to read Scripture with confidence. No prior study required.",
-                d: "",
-              },
-              {
-                track: "Undergraduate",
-                name: "Biblical Studies",
-                desc: "Book-by-book work in the Old and New Testaments, with hermeneutics and exegesis.",
-                d: "d1",
-              },
-              {
-                track: "Undergraduate",
-                name: "Christian Education",
-                desc: "For superintendents, youth directors, and anyone who carries a teaching ministry.",
-                d: "d1",
-              },
-              {
-                track: "Undergraduate",
-                name: "Theology",
-                desc: "Doctrine, church history, and homiletics for licensed ministers preparing to preach.",
-                d: "d2",
-              },
-              {
-                track: "Graduate",
-                name: "Master’s & Doctorate",
-                desc: "Advanced study for credentialed ministers already leading a congregation or ministry.",
-                d: "d2",
-              },
-            ].map((p) => (
+            {programs.map((p, i) => (
               <Link
-                key={p.name}
-                className={`prog rev ${p.d}`.trim()}
+                key={p.slug}
+                className={`prog rev ${["", "d1", "d1", "d2", "d2"][i] ?? "d2"}`.trim()}
                 to="/programs"
               >
                 <span className="prog-track">{p.track}</span>
                 <span className="prog-name">{p.name}</span>
-                <span className="prog-desc">{p.desc}</span>
+                <span className="prog-desc">{p.teaser}</span>
                 <span className="prog-go">View program &rarr;</span>
               </Link>
             ))}
@@ -212,20 +183,17 @@ export default function Home() {
             tabIndex={0}
             aria-label="Timeline of the seminary, 1901 to 2026"
           >
-            {[
-              { yr: "1901", mod: "", ev: <>Organized in October at <b>Providence Baptist Church</b> in Bartow, under the South Florida Association, as Florida Baptist Seminary.</> },
-              { yr: "1902", mod: "", ev: <>Moved to <b>Lakeland</b> for a more central location, meeting in local churches while a campus was raised.</> },
-              { yr: "1903–04", mod: "", ev: <>The <b>dormitory and academic buildings</b> are erected. The seminary has a home of its own.</> },
-              { yr: "1921", mod: "node--fire", ev: <>The <b>dormitory burns down</b> in November. Classes move into the sanctuaries of Harmony Baptist and St. Paul Baptist.</> },
-              { yr: "1925", mod: "", ev: <>The State of Florida issues a <b>charter of incorporation</b> under the name Florida Seminary.</> },
-              { yr: "1927–28", mod: "node--fire", ev: <>The <b>academic building burns</b>. Teaching continues uninterrupted in borrowed pews.</> },
-              { yr: "1932", mod: "", ev: <>A <b>new building rises</b> and the seminary returns to its own property after eleven years.</> },
-              { yr: "Today", mod: "", ev: <>Campuses in Lakeland, <b>Dunedin, Lake City, and Jacksonville</b>. Alumni pastor churches across the South.</> },
-              { yr: "2026", mod: "node--now", ev: <><b>Accreditation granted.</b> One hundred and twenty-five years of teaching, formally recognized.</> },
-            ].map((n) => (
-              <div key={n.yr} className={`node ${n.mod}`.trim()}>
-                <span className="yr">{n.yr}</span>
-                <p className="ev">{n.ev}</p>
+            {timeline.map((n) => (
+              <div
+                key={n.year}
+                className={`node${n.kind === "fire" ? " node--fire" : n.kind === "now" ? " node--now" : ""}`}
+              >
+                <span className="yr">{n.year}</span>
+                <p className="ev">
+                  {markBold(n.body).map((seg, i) =>
+                    seg.bold ? <b key={i}>{seg.text}</b> : <span key={i}>{seg.text}</span>,
+                  )}
+                </p>
               </div>
             ))}
           </div>
