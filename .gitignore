@@ -1,0 +1,10 @@
+# Design-tool exports and archives kept on disk but out of the repo / deploy
+*.zip
+.thumbnail
+seminary-mockups-standalone.html
+Seminary Pages.dc.html
+support.js
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
