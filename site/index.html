@@ -12,37 +12,9 @@
 </head>
 <body>
 
-<!-- ANNOUNCEMENT -->
-<div class="announce">
-  <div class="wrap">
-    <span><b>New:</b> Florida Theological Seminary is now an accredited institution.</span>
-    <a href="screens/accreditation.html">Read what it means &rsaquo;</a>
-  </div>
-</div>
 
-<!-- MASTHEAD -->
-<header class="masthead" id="masthead">
-  <div class="wrap">
-    <a class="brand" href="index.html">
-      <img src="https://static.wixstatic.com/media/25e3e6_30003ad300bd47fba73446ca0a3646db~mv2.png/v1/fill/w_147,h_159,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/updated%202024%20logo%20for%20florida%20theological%20seminary%20and%20bible%20college%20inc.png" alt="Florida Theological Seminary and Bible College">
-      <span class="brand-txt">
-        <span class="n">Florida Theological Seminary</span>
-        <span class="s">&amp; Bible College &middot; Est. 1901</span>
-      </span>
-    </a>
-    <nav class="nav" id="nav">
-      <a href="screens/programs.html">Programs</a>
-      <a href="screens/accreditation.html">Accreditation</a>
-      <a href="screens/history.html">Our History</a>
-      <a href="#campuses">Campuses</a>
-      <a href="screens/admissions.html">Admissions</a>
-      <a class="btn btn--brass" href="screens/admissions.html">Apply</a>
-    </nav>
-    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
+<div data-include="assets/partials/announce.html"></div>
+<div data-include="assets/partials/header.html"></div>
 
 <!-- HERO -->
 <section class="hero" id="top">
@@ -309,56 +281,11 @@
 </section>
 
 <!-- FOOTER -->
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <img src="https://static.wixstatic.com/media/25e3e6_cedf12f16d8047c0b4f98d674b0ed9dc~mv2.png/v1/fill/w_490,h_590,al_c,lg_1,q_85,enc_avif,quality_auto/25e3e6_cedf12f16d8047c0b4f98d674b0ed9dc~mv2.png" alt="Seal of Florida Theological Seminary and Bible College">
-        <p>Florida Theological Seminary and Bible College, Inc. Preparing the called for ministry since 1901.</p>
-      </div>
-      <div>
-        <h4>Academics</h4>
-        <ul>
-          <li><a href="screens/programs.html">Adult Bible Studies</a></li>
-          <li><a href="screens/programs.html">Biblical Studies</a></li>
-          <li><a href="screens/programs.html">Christian Education</a></li>
-          <li><a href="screens/programs.html">Theology</a></li>
-          <li><a href="screens/programs.html">Master&rsquo;s &amp; Doctorate</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Students</h4>
-        <ul>
-          <li><a href="screens/admissions.html">Apply</a></li>
-          <li><a href="#todo">Course catalog</a></li>
-          <li><a href="#todo">Fall 2026 schedule</a></li>
-          <li><a href="#todo">Degree requirements</a></li>
-          <li><a href="#todo">Alumni association</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Visit or write</h4>
-        <address>
-          115 W 5th Street<br>
-          Lakeland, FL 33805<br>
-          <a href="tel:8636833879">863-683-3879</a><br>
-          <a href="mailto:fltheologicalseminary@gmail.com">fltheologicalseminary@gmail.com</a>
-        </address>
-      </div>
-    </div>
-    <div class="foot-bar">
-      <span>&copy; 2026 Florida Theological Seminary and Bible College, Inc.</span>
-      <div class="social">
-        <a href="#todo">Facebook</a>
-        <a href="#todo">YouTube</a>
-        <a href="#todo">Instagram</a>
-      </div>
-    </div>
-  </div>
-</footer>
+<div data-include="assets/partials/footer.html"></div>
 
+<script src="assets/include.js"></script>
 <script>
-(function(){
+includePartials().then(function(){
   var mh = document.getElementById('masthead');
   var onScroll = function(){ mh.classList.toggle('is-stuck', window.scrollY > 12); };
   window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
@@ -384,7 +311,7 @@
     }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
     items.forEach(function(el){ io.observe(el); });
   }
-})();
+});
 </script>
 </body>
 </html>

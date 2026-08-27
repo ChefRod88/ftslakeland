@@ -50,6 +50,18 @@ Everything served lives in `site/`.
 
 Screen files were previously named `1a-programs.html` … `1i-mobile.html`.
 
+## Shared code
+
+- `site/assets/styles.css` — the homepage design system (palette + type tokens, `.btn`,
+  `.eyebrow`, `.masthead`, hero, section, and footer components, responsive rules).
+- `site/assets/screens.css` — the small shared reset for the standalone mockup screens.
+- `site/assets/partials/{announce,header,footer}.html` — the homepage announcement bar,
+  masthead, and footer, injected by `site/assets/include.js` into `<div data-include="…">`
+  placeholders. `includePartials()` returns a Promise; the homepage's behaviour script runs
+  in its `.then()` so the injected header exists first. Partial paths are relative to `site/`.
+- The nine `screens/*.html` keep their own bespoke, inline-styled chrome — it is visually
+  different from the homepage masthead, so it is not swapped for the shared partial.
+
 ## Editing notes
 
 - Fonts come from Google Fonts (Fraunces / Spectral / Barlow Condensed); the `<link>` is in each file's `<head>`.
