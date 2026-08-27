@@ -54,7 +54,9 @@ Screen files were previously named `1a-programs.html` … `1i-mobile.html`.
 
 - `site/assets/styles.css` — the homepage design system (palette + type tokens, `.btn`,
   `.eyebrow`, `.masthead`, hero, section, and footer components, responsive rules).
-- `site/assets/screens.css` — the small shared reset for the standalone mockup screens.
+- `site/assets/screens.css` — shared reset for the standalone mockup screens, plus a
+  responsive layer that reflows their fixed-1280px layout down to ~360px (`>1340px` renders
+  unchanged). See `TODO.md` for the visual tuning still owed.
 - `site/assets/partials/{announce,header,footer}.html` — the homepage announcement bar,
   masthead, and footer, injected by `site/assets/include.js` into `<div data-include="…">`
   placeholders. `includePartials()` returns a Promise; the homepage's behaviour script runs

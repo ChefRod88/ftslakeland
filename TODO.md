@@ -120,6 +120,19 @@ Still to do, because each needs the mockup to become interactive and needs a vis
 - **Screen headers** — `programs.html` / `history.html` use a real `<nav>`; confirm the
   others (`give.html`, `home-split.html`) expose nav landmarks when built out.
 
+## Responsive layer — needs a visual pass
+
+`site/assets/screens.css` now has a responsive block that reflows the fixed-1280px screens
+down to ~360px (fluid cards, single-column grids below 900px, tighter padding and smaller
+headings below 640px). It was written without a browser in the loop, so it is deliberately
+blunt (`[style*="…"] !important` overrides). Check each screen at 360 / 390 / 768 / 1024 and
+confirm 1280+ is unchanged; expect to hand-tune:
+
+- stat pairs that could stay 2-up on a phone (they currently collapse to 1 column)
+- the `programs.html` ledger rows and `portal.html` sidebar at the 900px break
+- heading sizes on `home-broadside.html` (the 106px broadside headline)
+- section padding where 20px is now too tight or still too loose
+
 ## Images
 
 Five real images load remotely from `static.wixstatic.com`. See
