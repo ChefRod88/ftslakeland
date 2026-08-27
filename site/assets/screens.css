@@ -1,0 +1,4 @@
+/* Shared chrome for the standalone mockup screens in site/screens/.
+   Bespoke per-screen layout stays inline on the elements by design. */
+body{margin:0;background:#D9D4C8;font-family:"Spectral",Georgia,serif;color:#2C313C}
+a{color:inherit}
