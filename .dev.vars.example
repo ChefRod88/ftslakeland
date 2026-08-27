@@ -1,0 +1,12 @@
+# Copy to `.dev.vars` for local development (git-ignored).
+# In production set these with: wrangler secret put NAME
+
+# Resend transactional email (https://resend.com) — API key
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
+
+# Cloudflare Turnstile (https://dash.cloudflare.com -> Turnstile)
+# Local dev can use the always-passing test keys:
+#   site   1x00000000000000000000AA
+#   secret 1x0000000000000000000000000000000AA
+TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

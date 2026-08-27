@@ -1,4 +1,21 @@
-# Design-tool exports and archives kept on disk but out of the repo / deploy
+# dependencies / build
+/node_modules/
+/build/
+/.react-router/
+.wrangler/
+*.tsbuildinfo
+
+# secrets & env
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# generated types
+worker-configuration.d.ts
+
+# design-tool exports kept on disk but out of the repo
 *.zip
 .thumbnail
 seminary-mockups-standalone.html
