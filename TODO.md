@@ -1,139 +1,48 @@
-# Placeholders to resolve before launch
+# Before launch
 
-Every item below is invented copy or a stand-in destination in the mockups. Confirm or
-replace each with real data. Line numbers are current as of this commit.
+The site is functional, but it must not go public with invented data. Everything below
+lives in `app/data/*.ts` (a developer edits it — there is no CMS yet) unless noted.
 
-## Accrediting body
+## Placeholder content — needs real values from the seminary
 
-`[accrediting body]` — name of the agency that granted accreditation is not filled in.
-
-- `site/index.html:55`
-- `site/screens/accreditation.html:23`
-- `site/all-screens.html:390`
-
-## Tuition figures
-
-All dollar amounts are guesses.
-
-- `site/screens/admissions.html:76` — Adult Bible Studies, **$120 / term**
-- `site/screens/admissions.html:77` — Undergraduate, **$65 / credit hour**
-- `site/screens/admissions.html:78` — Graduate, **$95 / credit hour**
-- `site/screens/give.html:28` — prose: "for want of **$65** a credit hour"
-- `site/screens/give.html:44,45,46` — gift buttons **$65 / $260 / $1,000**
-- `site/screens/give.html:48` — "**$260** covers one four-hour course … **$65** covers a single credit hour"
-- `site/all-screens.html:263-265` — same tuition table in the stacked canvas
-
-## Fundraising numbers (Give)
-
-- `site/screens/give.html:30` — **$46,200 raised toward $75,000**
-- `site/screens/give.html:31` — **31 supporting churches**
-- `site/screens/give.html:33` — progress bar hard-coded to **61%** (`width:61%`)
-- `site/all-screens.html:663-664` — same figures in the stacked canvas
-
-## Cohort size
-
-"**Cohort of twelve**" for the doctoral / advanced track.
-
-- `site/screens/programs.html:151`
-- `site/screens/mobile.html:86`
-- `site/all-screens.html:173, 791`
-
-## Term start date
-
-"**September 8**" / "the week of September 8" / "Fall term begins September 8".
-
-- `site/screens/admissions.html:28`
-- `site/screens/home-broadside.html:28`
-- `site/all-screens.html:215, 455`
-
-## Faculty names
-
-Invented: **Dr. Whitfield** (Systematic Theology II), **Rev. Daniels** (Baptist History & Polity).
-
-- `site/screens/portal.html:61, 69`
-- `site/screens/mobile.html:113, 121`
-- `site/all-screens.html:612, 620, 818, 826`
-
-## Fake student record
-
-"**Rev. Marcus Bell**" pre-filled in the application name field; the portal is built around
-this fictional student.
-
-- `site/screens/admissions.html:33`
-- `site/all-screens.html:220`
-- Portal student stats — `Theology, third year · 14 credit hours completed of 96`,
-  `Fall balance $390.00`:
-  - `site/screens/portal.html:42, 75`
-  - `site/screens/mobile.html:102, 126`
-  - `site/all-screens.html:593, 626, 807, 831`
-
-## Contact details to verify (not obviously placeholder, but confirm)
-
-- Phone `863-683-3879` — footer partial, `admissions.html:20`, `portal.html:35`, `mobile.html`, `all-screens.html`
-- Email `fltheologicalseminary@gmail.com` — footer partial `:34`, `index.html:257`
-- Registrar contact "Sis. Linda Silas" — `index.html:257`, `portal.html:35`
-- Address `115 W 5th Street, Lakeland, FL 33805` — footer partial
-- Donation URL `https://secure.anedot.com/florida-theological-seminary/donate` —
-  `site/screens/give.html:54` and the homepage "Make a gift" routes to this page.
-- "one hundred and twenty-five years" / "125th year" — derived from 1901; reword if the
-  count is meant to be exact at a specific date.
-
-## Unbuilt destinations — every `href="#todo"`
-
-These links have no real page yet. Point them somewhere or remove the affordance.
-
-| File | Lines | What |
+| What | Where | Note |
 | --- | --- | --- |
-| `site/assets/partials/footer.html` | 22–25, 41–43 | Course catalog, Fall schedule, Degree requirements, Alumni association; Facebook / YouTube / Instagram |
-| `site/index.html` | 267, 268 | "Download the catalog", "Fall 2026 schedule" |
-| `site/screens/programs.html` | 84, 104, 123, 143, 162, 168 | five "Program details →" links, "Download the catalog" |
-| `site/screens/accreditation.html` | 25, 57, 62 | "Read the full statement", "Current student notice", "Talk to the registrar" |
-| `site/screens/admissions.html` | 40 | application "Continue →" |
-| `site/screens/home-broadside.html` | 36 | "Download the catalog" |
-| `site/screens/portal.html` | 26–32, 44, 50, 78, 83 | all portal nav items + actions (portal is a static mockup) |
-| `site/screens/mobile.html` | 35, 36, 54, 56, 63, 68, 73, 78, 83, 90, 107 | mobile CTAs and list items |
+| **Accrediting body name** | `app/data/site.ts` → `accreditingBody` | Shows as `[accrediting body]` on `/` and `/accreditation`. |
+| **Tuition figures** ($120/term, $65/cr, $95/cr) | `app/data/admissions.ts` → `tuition` | Marked "placeholder pending final board approval" on `/admissions`. |
+| **Cohort size "twelve"** | `app/data/programs.ts` → Master's & Doctorate `description` | |
+| **Term start date** | `app/data/admissions.ts` (`admissionSteps`), `app/data/site.ts` | "Fall term" is generic; add the real date. |
+| **Faculty names** | not currently shown (were "Dr. Whitfield" / "Rev. Daniels" in the old portal mock) | Add when faculty pages are built. |
+| **President quote / name** | `app/routes/home.tsx` (President section) | "Dr. Frank O'Harroll, Sr." — confirm this is current and approved. |
+| **Fundraising numbers** ($46,200 / $75,000, 31 churches) | not shown yet | The old Give mockup had them; `/give` is now generic. Add real numbers if you want the thermometer back. |
+| **Archival photo, c.1904** | `app/data/timeline.ts` → `imagePlaceholder` | Renders as a labelled placeholder box on `/history`. |
+| **Course catalog / schedule / degree-requirements pages** | footer + `/admissions` link to `/admissions` as a stand-in | Real documents or pages needed. |
+| **Social links** | footer currently links only to `/privacy` | Add Facebook/YouTube/Instagram URLs when ready. |
 
-## Open design decision
+## Contact details — confirm these are correct (not obviously placeholder)
 
-`site/screens/home-broadside.html` and `site/screens/home-split.html` are two earlier
-homepage directions. The live homepage (`site/index.html`) is a third. Decide whether to
-keep the alternates or drop them; they are currently only linked from `site/mockups.html`.
+- Phone `863-683-3879`, email `fltheologicalseminary@gmail.com` (`app/data/site.ts`).
+  Consider a dedicated `admissions@` address for `FROM_EMAIL`.
+- Registrar name "Sis. Linda Silas".
+- Address `115 W 5th Street, Lakeland, FL 33805`.
+- Anedot donation URL `https://secure.anedot.com/florida-theological-seminary/donate`
+  (`app/data/site.ts` → `giveUrl`). Decide: link out (current) or embed on `/give`.
 
-## Accessibility follow-ups (deferred from the a11y pass)
+## Operations — needed before or at launch
 
-Done in the a11y pass: `<main>` landmark on the homepage and the seven regular screens,
-descriptive `alt` on every image, one `<h1>` per page (extra mobile headings demoted to
-`<h2>`), `:focus-visible` brass outline on the screens.
+- Create the D1 database, KV namespace, and R2 bucket; paste real IDs into `wrangler.toml`
+  (see README). Run `wrangler d1 migrations apply DB --remote`.
+- Set `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` as Wrangler secrets; replace the
+  Turnstile **site** key in `wrangler.toml [vars]`; set production `SITE_URL` / `FROM_EMAIL`.
+- Add Resend's DNS records for the sending domain.
+- Put a Cloudflare Access policy on `/admin/*` limited to staff emails.
+- Point the seminary domain at the Worker.
 
-Still to do, because each needs the mockup to become interactive and needs a visual check:
+## Nice to have (not blockers)
 
-- **`site/screens/mobile.html`** — irregular wrapper markup; not given a single `<main>`.
-  Wrap the three device frames (or give each `role="group"` + label) when this becomes real.
-- **Mock "controls" that are `<span>`** — convert to `<button type="button">` (add
-  `font:inherit`) once they do something:
-  - `site/screens/programs.html` filter chips ("All tracks" / "Foundational" / …)
-  - `site/screens/give.html` frequency tabs ("One time" / "Monthly" / "Church pledge") and
-    the `$65 / $260 / $1,000` amount chips
-  - `site/screens/give.html` fake form fields (`<span>Name or church</span>`) → real
-    `<label>` + `<input>`
-  - `site/screens/portal.html` sidebar items are already `<a>` but point at `#todo`
-- **Screen headers** — `programs.html` / `history.html` use a real `<nav>`; confirm the
-  others (`give.html`, `home-split.html`) expose nav landmarks when built out.
-
-## Responsive layer — needs a visual pass
-
-`site/assets/screens.css` now has a responsive block that reflows the fixed-1280px screens
-down to ~360px (fluid cards, single-column grids below 900px, tighter padding and smaller
-headings below 640px). It was written without a browser in the loop, so it is deliberately
-blunt (`[style*="…"] !important` overrides). Check each screen at 360 / 390 / 768 / 1024 and
-confirm 1280+ is unchanged; expect to hand-tune:
-
-- stat pairs that could stay 2-up on a phone (they currently collapse to 1 column)
-- the `programs.html` ledger rows and `portal.html` sidebar at the 900px break
-- heading sizes on `home-broadside.html` (the 106px broadside headline)
-- section padding where 20px is now too tight or still too loose
-
-## Images
-
-Five real images load remotely from `static.wixstatic.com`. See
-`site/assets/img/MANIFEST.md` — download and localise before launch.
+- Replace remote `static.wixstatic.com` images with local files in `app/data/site.ts`
+  and `app/` assets (CSP already restricts `img-src` to self + that host).
+- Real favicon / social share image (`public/`), currently the framework default.
+- CSP uses `script-src 'unsafe-inline'` for React Router's hydration script; move to a
+  nonce if you want it stricter.
+- Playwright tests for the three form flows.
+- `/history` and `/programs` could gain per-item detail pages.

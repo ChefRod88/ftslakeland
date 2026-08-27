@@ -1,72 +1,109 @@
-# Florida Theological Seminary — static site
+# Florida Theological Seminary — website
 
-Static HTML. No build step, no dependencies, no framework.
+Public site for Florida Theological Seminary and Bible College (Lakeland, FL). Built with
+**React Router v8** (framework mode) running SSR on **Cloudflare Workers**, with **D1**
+(SQLite) for form submissions, **R2** for uploaded files, **KV** for rate limiting,
+**Resend** for email, and **Turnstile** for spam protection. Giving runs through **Anedot**.
 
-## Run locally
+The logged-in student portal is intentionally out of scope — `/portal` is a "coming soon"
+page for now.
+
+## Requirements
+
+- Node 20+
+- A Cloudflare account (for deploy and for local D1/R2/KV simulation via Wrangler)
+
+## Develop
 
 ```bash
-python3 -m http.server 8000 --directory site
+npm install
+cp .dev.vars.example .dev.vars          # fill in keys, or leave blank for console-logged email
+npm run db:migrate:local               # create local D1 tables
+npm run dev                            # http://localhost:5173
 ```
 
-Or in GitHub Codespaces: the devcontainer starts this server automatically on **port 8000**.
+`npm run dev` runs Vite + the Cloudflare plugin, so `context.get(cloudflare).env` gives the
+same bindings locally as in production (local D1/R2/KV live under `.wrangler/`).
 
-## Deploy to Cloudflare Pages
+Other scripts: `npm run build`, `npm run typecheck`, `npm run preview`, `npm run deploy`.
 
-This is a plain static site — no build step. The deploy output directory is `site/`.
+## Project layout
 
-**Dashboard (Git integration):**
-1. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git.
-2. Pick this repo. Build command: *(leave empty)*. Build output directory: `site`.
-3. Save and deploy. `site/_redirects` and `site/_headers` are picked up automatically.
+```
+app/
+  root.tsx              document shell, fonts, global CSS
+  routes.ts             route table
+  context.ts            RouterContext holding the Cloudflare env/ctx
+  routes/               one file per page; layout.tsx wraps the public site,
+                        admin/ is a separate Access-gated area
+  components/           Header, Footer, Announce, form.tsx (Field, Turnstile)
+  data/                 site.ts, programs.ts, timeline.ts, admissions.ts —
+                        structured content a developer edits (no CMS)
+  lib/                  db, applications, validation (zod), email (Resend),
+                        turnstile, ratelimit, staff, ids
+  app.css              the whole design system (tokens + components)
+workers/app.ts          Workers entry: redirects, security headers, SSR handler
+migrations/             D1 schema
+_reference/             the old static mockups, kept for visual comparison (not served)
+```
 
-**CLI (no install):**
+## Forms
+
+All three post with progressive enhancement (they work with JavaScript disabled):
+
+| Route | Table | Emails |
+| --- | --- | --- |
+| `/contact` (inquiry) | `inquiries` | registrar + auto-reply |
+| `/accreditation` (church sponsorship) | `sponsorship_requests` | registrar + auto-reply |
+| `/admissions/apply` (application) | `applications`, `application_files` | registrar + applicant, with a `FTS-XXXXXX` reference |
+
+The application supports **Save & finish later**: it stores a draft keyed by a random
+`resume_token` and emails the applicant a link back (`/admissions/apply?resume=…`).
+
+Every form runs: honeypot field → Turnstile verify → KV rate limit → zod validation →
+D1 insert → email (via `sendEmailSafe`, so a mail failure never drops a stored submission)
+→ `form_events` audit row.
+
+## First-time Cloudflare setup
+
+Create the resources and paste the real IDs into `wrangler.toml` (they are `0000…`
+placeholders now):
+
 ```bash
-npx wrangler pages deploy site
+wrangler d1 create ftslakeland                 # -> database_id
+wrangler kv namespace create KV                 # -> id
+wrangler r2 bucket create ftslakeland-uploads
+wrangler d1 migrations apply DB --remote        # create tables in prod
 ```
 
-`wrangler.toml` at the repo root pins the project name and `pages_build_output_dir`, so both
-paths agree on `site/` as the root.
+Secrets (production):
 
-## Structure
+```bash
+wrangler secret put RESEND_API_KEY             # from resend.com
+wrangler secret put TURNSTILE_SECRET_KEY       # from Cloudflare -> Turnstile
+```
 
-Everything served lives in `site/`.
+`TURNSTILE_SITE_KEY` is public and lives in `wrangler.toml [vars]` — replace the test key.
+Also set `SITE_URL` and `FROM_EMAIL` there for production.
 
-- `site/index.html` — the homepage
-- `site/mockups.html` — internal contact sheet: one link per screen
-- `site/all-screens.html` — all nine screens stacked on one page (design canvas)
-- `site/screens/*.html` — one screen per file:
+**Email domain:** add Resend's DNS records for whatever domain `FROM_EMAIL` uses, or mail
+will not deliver.
 
-  | File | Screen |
-  | --- | --- |
-  | `programs.html` | Programs — registrar's ledger |
-  | `admissions.html` | Admissions — application step 1, tuition table, FAQ |
-  | `history.html` | Our History — timeline 1901–2026 |
-  | `accreditation.html` | Accreditation announcement landing |
-  | `home-broadside.html` | Homepage direction A — typographic broadside |
-  | `home-split.html` | Homepage direction B — full-bleed split registry |
-  | `portal.html` | Student portal — logged-in dashboard |
-  | `give.html` | Give — donors and supporting churches |
-  | `mobile.html` | Three 390px mobile screens |
+**Protect `/admin`:** in the Cloudflare dashboard → Zero Trust → Access → Applications, add
+a self-hosted application for `your-domain/admin/*` with a policy limited to seminary staff
+emails. The app also refuses `/admin` requests on a real hostname that lack the
+`Cf-Access-Authenticated-User-Email` header, but Access is the real gate.
 
-Screen files were previously named `1a-programs.html` … `1i-mobile.html`.
+## Deploy
 
-## Shared code
+```bash
+npm run deploy        # build + wrangler deploy
+```
 
-- `site/assets/styles.css` — the homepage design system (palette + type tokens, `.btn`,
-  `.eyebrow`, `.masthead`, hero, section, and footer components, responsive rules).
-- `site/assets/screens.css` — shared reset for the standalone mockup screens, plus a
-  responsive layer that reflows their fixed-1280px layout down to ~360px (`>1340px` renders
-  unchanged). See `TODO.md` for the visual tuning still owed.
-- `site/assets/partials/{announce,header,footer}.html` — the homepage announcement bar,
-  masthead, and footer, injected by `site/assets/include.js` into `<div data-include="…">`
-  placeholders. `includePartials()` returns a Promise; the homepage's behaviour script runs
-  in its `.then()` so the injected header exists first. Partial paths are relative to `site/`.
-- The nine `screens/*.html` keep their own bespoke, inline-styled chrome — it is visually
-  different from the homepage masthead, so it is not swapped for the shared partial.
+or connect the repo in the Cloudflare dashboard (Workers & Pages → build command
+`npm run build`).
 
-## Editing notes
+## Before the site goes live
 
-- Fonts come from Google Fonts (Fraunces / Spectral / Barlow Condensed); the `<link>` is in each file's `<head>`.
-- Palette: navy `#0E1830`, brass `#C79A3F`, oxblood `#7A2029`, bone `#F1EEE7`.
-- Photography is the existing site's images (remote `static.wixstatic.com` URLs) plus placeholders where noted.
-- Tuition figures, cohort sizes, dates, and faculty names are placeholders — see `TODO.md` before publishing.
+See `TODO.md` — placeholder figures, the accrediting body name, faculty names, and term
+dates still need real values from the seminary.
