@@ -2,6 +2,7 @@ import {
   type RouteConfig,
   index,
   layout,
+  prefix,
   route,
 } from "@react-router/dev/routes";
 
@@ -18,4 +19,18 @@ export default [
     route("contact", "routes/contact.tsx"),
     route("privacy", "routes/privacy.tsx"),
   ]),
+
+  ...prefix("admin", [
+    layout("routes/admin/layout.tsx", [
+      index("routes/admin/dashboard.tsx"),
+      route("applications", "routes/admin/applications.tsx"),
+      route("applications/:id", "routes/admin/application.tsx"),
+      route("inquiries", "routes/admin/inquiries.tsx"),
+      route("sponsorships", "routes/admin/sponsorships.tsx"),
+      route("files/:id", "routes/admin/file.tsx"),
+    ]),
+  ]),
+
+  route("sitemap.xml", "routes/sitemap.tsx"),
+  route("robots.txt", "routes/robots.tsx"),
 ] satisfies RouteConfig;

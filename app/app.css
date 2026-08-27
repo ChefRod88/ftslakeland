@@ -617,3 +617,44 @@ p:last-child{margin-bottom:0;}
   border:1px solid var(--oxblood);background:rgba(122,32,41,.06);
   padding:1rem 1.25rem;margin-bottom:1.5rem;color:var(--oxblood);max-width:44rem;
 }
+
+/* ============================================================
+   ADMIN (Phase 4) — plain, dense, staff-only
+   ============================================================ */
+.admin{max-width:1100px;margin-inline:auto;padding:2rem clamp(1rem,4vw,2.5rem);}
+.admin-top{
+  display:flex;flex-wrap:wrap;gap:1.25rem;align-items:baseline;
+  border-bottom:1px solid var(--bone-2);padding-bottom:1rem;margin-bottom:2rem;
+}
+.admin-top .brand{font-family:var(--display);font-weight:600;color:var(--ink);font-size:1.1rem;}
+.admin-nav{display:flex;gap:1.25rem;flex-wrap:wrap;font-family:var(--util);
+  text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;}
+.admin-nav a{color:var(--muted);text-decoration:none;}
+.admin-nav a[aria-current="page"]{color:var(--ink);border-bottom:2px solid var(--brass);}
+.admin-who{margin-left:auto;font-size:.8rem;color:var(--muted);}
+
+.stat-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;}
+.stat{border:1px solid var(--bone-2);padding:1rem 1.25rem;min-width:9rem;}
+.stat .n{font-family:var(--display);font-size:2rem;font-weight:600;color:var(--ink);line-height:1;}
+.stat .l{font-family:var(--util);text-transform:uppercase;letter-spacing:.12em;
+  font-size:.72rem;color:var(--muted);margin-top:.35rem;}
+
+table.admin-table{width:100%;border-collapse:collapse;font-size:.9rem;}
+.admin-table th,.admin-table td{
+  text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--bone-2);
+  vertical-align:top;
+}
+.admin-table th{
+  font-family:var(--util);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.7rem;color:var(--muted);
+}
+.admin-table tr:hover,.admin-table tbody tr:hover{background:rgba(199,154,63,.06);}
+.admin-table a{color:var(--ink);}
+.badge{
+  display:inline-block;font-family:var(--util);text-transform:uppercase;
+  letter-spacing:.1em;font-size:.65rem;padding:.15rem .5rem;border:1px solid var(--bone-2);
+}
+.badge--submitted{border-color:var(--brass);color:var(--oxblood);}
+.dl{display:grid;grid-template-columns:12rem 1fr;gap:.5rem 1.5rem;font-size:.95rem;}
+.dl dt{color:var(--muted);}
+.dl dd{margin:0;color:var(--body);white-space:pre-wrap;}
