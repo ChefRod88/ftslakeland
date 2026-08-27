@@ -561,3 +561,59 @@ p:last-child{margin-bottom:0;}
   .ledger-row{grid-template-columns:1fr;gap:1rem;}
   .ledger-row .spec{border-left:0;padding-left:0;}
 }
+
+/* ============================================================
+   FORMS (Phase 3)
+   ============================================================ */
+.form{max-width:44rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.25rem;}
+.form-grid .field.full{grid-column:1 / -1;}
+@media (max-width:640px){ .form-grid{grid-template-columns:1fr;} }
+
+.field{display:flex;flex-direction:column;gap:.4rem;}
+.field label{
+  font-family:var(--util);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.75rem;font-weight:600;color:var(--muted);
+}
+.field label span[aria-hidden]{color:var(--oxblood);}
+.field-hint{margin:0;font-size:.85rem;color:var(--muted);font-weight:300;}
+.field input,.field select,.field textarea{
+  font-family:var(--prose);font-size:1rem;color:var(--body);
+  background:#fff;border:1px solid rgba(14,24,48,.28);
+  padding:.7rem .8rem;border-radius:0;width:100%;
+}
+.field textarea{min-height:7rem;resize:vertical;}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{
+  outline:2px solid var(--brass);outline-offset:1px;border-color:var(--brass);
+}
+.field input[aria-invalid],.field textarea[aria-invalid],.field select[aria-invalid]{
+  border-color:var(--oxblood);
+}
+.field-err{margin:0;font-size:.85rem;color:var(--oxblood);font-weight:400;}
+
+.form fieldset{border:0;padding:0;margin:0 0 2rem;}
+.form legend{
+  font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink);
+  margin-bottom:.25rem;padding:0;
+}
+.form .legend-note{margin:0 0 1.1rem;color:var(--muted);font-weight:300;font-size:.95rem;}
+
+.form-actions{
+  display:flex;gap:1rem;flex-wrap:wrap;align-items:center;
+  margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bone-2);
+}
+.form-note{font-size:.85rem;color:var(--muted);}
+
+.form-ok{
+  border:1px solid var(--brass);background:rgba(199,154,63,.08);
+  padding:1.5rem 1.75rem;max-width:44rem;
+}
+.form-ok h2{font-size:1.5rem;color:var(--ink);margin:0 0 .5rem;}
+.form-ok .code{
+  font-family:var(--display);font-size:1.75rem;font-weight:600;color:var(--oxblood);
+  letter-spacing:.02em;
+}
+.form-error-summary{
+  border:1px solid var(--oxblood);background:rgba(122,32,41,.06);
+  padding:1rem 1.25rem;margin-bottom:1.5rem;color:var(--oxblood);max-width:44rem;
+}

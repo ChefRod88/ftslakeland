@@ -19,6 +19,8 @@ enabled = true
 SITE_URL = "http://localhost:5173"
 REGISTRAR_EMAIL = "fltheologicalseminary@gmail.com"
 FROM_EMAIL = "admissions@ftslakeland.org"
+# Turnstile site key is public. Test key below always passes; replace for prod.
+TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
 
 # ---------------------------------------------------------------------------
 # Bindings. IDs are placeholders — create the resources and paste real IDs:

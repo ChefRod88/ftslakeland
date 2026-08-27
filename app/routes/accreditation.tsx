@@ -1,5 +1,8 @@
-import { Link } from "react-router";
+import { Form, Link, useNavigation } from "react-router";
 import type { Route } from "./+types/accreditation";
+import { cloudflare } from "~/context";
+import { Field, Turnstile } from "~/components/form";
+import { processSponsorship } from "~/lib/forms.server";
 import { site } from "~/data/site";
 
 export function meta(_: Route.MetaArgs) {
@@ -11,6 +14,16 @@ export function meta(_: Route.MetaArgs) {
         "As of 2026, Florida Theological Seminary and Bible College is an accredited institution. What that changes, and what it does not.",
     },
   ];
+}
+
+export function loader({ context }: Route.LoaderArgs) {
+  const { env } = context.get(cloudflare);
+  return { turnstileSiteKey: env.TURNSTILE_SITE_KEY };
+}
+
+export async function action({ request, context }: Route.ActionArgs) {
+  const { env } = context.get(cloudflare);
+  return processSponsorship(request, env);
 }
 
 const cells = [
@@ -31,7 +44,15 @@ const cells = [
   },
 ];
 
-export default function Accreditation() {
+export default function Accreditation({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
+  const nav = useNavigation();
+  const submitting = nav.state === "submitting";
+  const errors = actionData?.ok === false ? actionData.errors : {};
+  const values = actionData?.ok === false ? actionData.values : {};
+
   return (
     <>
       <header className="page-hero">
@@ -47,7 +68,7 @@ export default function Accreditation() {
             change our commitment to rightly dividing the Word. It changes who
             else has to recognize it.
           </p>
-          <p style={{ marginTop: "1.75rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          <p style={{ marginTop: "1.75rem" }}>
             <Link className="btn btn--brass" to="/admissions/apply">
               Apply for Fall 2026
             </Link>
@@ -69,39 +90,100 @@ export default function Accreditation() {
 
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "clamp(2rem,5vw,3rem)",
               marginTop: "clamp(2.5rem,6vw,3.5rem)",
+              maxWidth: "44rem",
             }}
           >
-            <div>
-              <h2 style={{ fontSize: "clamp(1.6rem,3vw,2rem)", marginBottom: "1rem" }}>
-                If you are already enrolled
-              </h2>
-              <p style={{ color: "#3B4150", fontWeight: 300 }}>
-                Nothing you have completed is lost. Coursework taken before 2026
-                is being recorded against the accredited transcript, and the
-                registrar is contacting current students by campus.
-              </p>
-            </div>
-            <div style={{ background: "var(--oxblood)", color: "#F7ECE4", padding: "clamp(1.75rem,4vw,2.25rem)" }}>
-              <h2 style={{ fontSize: "clamp(1.5rem,2.6vw,1.8rem)", color: "#fff", marginBottom: ".75rem" }}>
-                For pastors and supporting churches
-              </h2>
-              <p style={{ fontWeight: 300, color: "rgba(247,236,228,.85)", marginBottom: "1.25rem" }}>
-                Send us the names of members you have been training informally.
-                Accredited standing means their study now counts toward a
-                credential your association will recognize.
-              </p>
-              <a
-                className="btn btn--brass"
-                href={`mailto:${site.email}?subject=Church-sponsored%20students`}
-              >
-                Talk to the registrar
-              </a>
-            </div>
+            <h2 style={{ fontSize: "clamp(1.6rem,3vw,2rem)", marginBottom: ".5rem" }}>
+              If you are already enrolled
+            </h2>
+            <p style={{ color: "#3B4150", fontWeight: 300 }}>
+              Nothing you have completed is lost. Coursework taken before 2026 is
+              being recorded against the accredited transcript, and the registrar
+              is contacting current students by campus.
+            </p>
           </div>
+        </div>
+      </section>
+
+      <section className="band" style={{ background: "var(--oxblood)", color: "#F7ECE4" }}>
+        <div className="wrap">
+          <p className="eyebrow" style={{ color: "var(--brass-lt)" }}>
+            For pastors and supporting churches
+          </p>
+          <h2 style={{ color: "#fff", maxWidth: "22ch" }}>
+            Tell us who you have been training.
+          </h2>
+          <p style={{ fontWeight: 300, color: "rgba(247,236,228,.85)", maxWidth: "52ch" }}>
+            Accredited standing means their study now counts toward a credential
+            your association will recognize. Send us the names and the registrar
+            will follow up.
+          </p>
+
+          {actionData?.ok ? (
+            <div
+              className="form-ok"
+              style={{ marginTop: "1.5rem", background: "rgba(255,255,255,.1)", borderColor: "var(--brass-lt)" }}
+            >
+              <h2 style={{ color: "#fff" }}>Thank you.</h2>
+              <p style={{ color: "rgba(247,236,228,.9)" }}>
+                The registrar has your church&rsquo;s request and will be in
+                touch about training your members.
+              </p>
+            </div>
+          ) : (
+            <Form method="post" className="form" noValidate style={{ marginTop: "1.75rem" }}>
+              {errors._form && (
+                <p className="form-error-summary" role="alert" style={{ color: "#fff", borderColor: "var(--brass-lt)" }}>
+                  {errors._form}
+                </p>
+              )}
+              <div className="form-grid">
+                <Field label="Church name" name="churchName" required error={errors.churchName}>
+                  <input id="f-churchName" name="churchName" required defaultValue={values.churchName} />
+                </Field>
+                <Field label="Your name" name="contactName" required error={errors.contactName}>
+                  <input id="f-contactName" name="contactName" required defaultValue={values.contactName} />
+                </Field>
+                <Field label="Email" name="email" required error={errors.email}>
+                  <input id="f-email" name="email" type="email" required defaultValue={values.email} />
+                </Field>
+                <Field label="Phone" name="phone" error={errors.phone}>
+                  <input id="f-phone" name="phone" type="tel" defaultValue={values.phone} />
+                </Field>
+                <div className="field full">
+                  <Field
+                    label="Members you are training"
+                    name="students"
+                    hint="Names, and roughly where each is in their study."
+                    error={errors.students}
+                  >
+                    <textarea id="f-students" name="students" defaultValue={values.students} />
+                  </Field>
+                </div>
+                <div className="field full">
+                  <Field label="Anything else" name="message" error={errors.message}>
+                    <textarea id="f-message" name="message" defaultValue={values.message} />
+                  </Field>
+                </div>
+              </div>
+
+              <div aria-hidden="true" style={{ position: "absolute", left: "-9999px" }}>
+                <label>
+                  Company
+                  <input name="company" tabIndex={-1} autoComplete="off" />
+                </label>
+              </div>
+
+              <Turnstile siteKey={loaderData.turnstileSiteKey} />
+
+              <div className="form-actions" style={{ borderColor: "rgba(247,236,228,.25)" }}>
+                <button className="btn btn--brass" type="submit" disabled={submitting}>
+                  {submitting ? "Sending…" : "Send to the registrar"}
+                </button>
+              </div>
+            </Form>
+          )}
         </div>
       </section>
     </>
