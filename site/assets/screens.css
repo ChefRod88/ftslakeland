@@ -2,3 +2,5 @@
    Bespoke per-screen layout stays inline on the elements by design. */
 body{margin:0;background:#D9D4C8;font-family:"Spectral",Georgia,serif;color:#2C313C}
 a{color:inherit}
+main{display:block}
+:focus-visible{outline:2px solid #C79A3F;outline-offset:3px}

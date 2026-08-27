@@ -99,6 +99,27 @@ These links have no real page yet. Point them somewhere or remove the affordance
 homepage directions. The live homepage (`site/index.html`) is a third. Decide whether to
 keep the alternates or drop them; they are currently only linked from `site/mockups.html`.
 
+## Accessibility follow-ups (deferred from the a11y pass)
+
+Done in the a11y pass: `<main>` landmark on the homepage and the seven regular screens,
+descriptive `alt` on every image, one `<h1>` per page (extra mobile headings demoted to
+`<h2>`), `:focus-visible` brass outline on the screens.
+
+Still to do, because each needs the mockup to become interactive and needs a visual check:
+
+- **`site/screens/mobile.html`** — irregular wrapper markup; not given a single `<main>`.
+  Wrap the three device frames (or give each `role="group"` + label) when this becomes real.
+- **Mock "controls" that are `<span>`** — convert to `<button type="button">` (add
+  `font:inherit`) once they do something:
+  - `site/screens/programs.html` filter chips ("All tracks" / "Foundational" / …)
+  - `site/screens/give.html` frequency tabs ("One time" / "Monthly" / "Church pledge") and
+    the `$65 / $260 / $1,000` amount chips
+  - `site/screens/give.html` fake form fields (`<span>Name or church</span>`) → real
+    `<label>` + `<input>`
+  - `site/screens/portal.html` sidebar items are already `<a>` but point at `#todo`
+- **Screen headers** — `programs.html` / `history.html` use a real `<nav>`; confirm the
+  others (`give.html`, `home-split.html`) expose nav landmarks when built out.
+
 ## Images
 
 Five real images load remotely from `static.wixstatic.com`. See
