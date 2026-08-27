@@ -16,7 +16,7 @@ enabled = true
 # `wrangler secret put` in production — see .dev.vars.example.
 # ---------------------------------------------------------------------------
 [vars]
-SITE_URL = "http://localhost:5173"
+SITE_URL = "https://ftslakeland.rodney-5e8.workers.dev"
 REGISTRAR_EMAIL = "fltheologicalseminary@gmail.com"
 FROM_EMAIL = "admissions@ftslakeland.org"
 # Turnstile site key is public. Test key below always passes; replace for prod.
@@ -31,13 +31,15 @@ TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
 [[d1_databases]]
 binding = "DB"
 database_name = "ftslakeland"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "bd332254-6f65-40dd-acc9-9847f0d1bff5"
 migrations_dir = "migrations"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "0000000000000000000000000000000000"
+id = "19a5d23964344324bb63f6378501f54c"
 
-[[r2_buckets]]
-binding = "UPLOADS"
-bucket_name = "ftslakeland-uploads"
+# R2 is used only for optional application file uploads. Enable R2 in the
+# Cloudflare dashboard, create the bucket, then uncomment this block:
+# [[r2_buckets]]
+# binding = "UPLOADS"
+# bucket_name = "ftslakeland-uploads"

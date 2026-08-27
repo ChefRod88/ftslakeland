@@ -53,6 +53,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
   return {
     turnstileSiteKey: env.TURNSTILE_SITE_KEY,
+    uploadsEnabled: Boolean((env as Env & { UPLOADS?: R2Bucket }).UPLOADS),
     token: resume || newToken(),
     resumed: Boolean(draft),
     draft: draft && {
@@ -174,8 +175,9 @@ export async function action({
 
   const appId = await saveDraft(env.DB, token, parsed.data, meta);
 
+  const uploads = (env as Env & { UPLOADS?: R2Bucket }).UPLOADS;
   const file = fd.get("pastorLetter");
-  if (file instanceof File && file.size > 0) {
+  if (file instanceof File && file.size > 0 && uploads) {
     if (file.size > MAX_FILE || !OK_TYPES.has(file.type)) {
       return {
         ok: false as const,
@@ -187,7 +189,7 @@ export async function action({
       };
     }
     const key = `applications/${appId}/pastor-letter-${Date.now()}-${file.name}`;
-    await env.UPLOADS.put(key, await file.arrayBuffer(), {
+    await uploads.put(key, await file.arrayBuffer(), {
       httpMetadata: { contentType: file.type },
     });
     await attachFile(env.DB, appId, {
@@ -358,21 +360,27 @@ export default function Apply({ loaderData, actionData }: Route.ComponentProps) 
               <Field label="Pastor's phone" name="pastorPhone" error={errors.pastorPhone}>
                 <input id="f-pastorPhone" name="pastorPhone" type="tel" defaultValue={val("pastorPhone")} />
               </Field>
-              <div className="field full">
-                <Field
-                  label="Pastor's letter (optional)"
-                  name="pastorLetter"
-                  hint="PDF, image, or Word document, under 5 MB."
-                  error={errors.pastorLetter}
-                >
-                  <input
-                    id="f-pastorLetter"
+              {loaderData.uploadsEnabled ? (
+                <div className="field full">
+                  <Field
+                    label="Pastor's letter (optional)"
                     name="pastorLetter"
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                  />
-                </Field>
-              </div>
+                    hint="PDF, image, or Word document, under 5 MB."
+                    error={errors.pastorLetter}
+                  >
+                    <input
+                      id="f-pastorLetter"
+                      name="pastorLetter"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                    />
+                  </Field>
+                </div>
+              ) : (
+                <p className="field full legend-note" style={{ margin: 0 }}>
+                  Have your pastor email the letter to {site.email}.
+                </p>
+              )}
             </div>
           </fieldset>
 

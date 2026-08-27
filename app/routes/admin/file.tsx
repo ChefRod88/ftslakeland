@@ -12,7 +12,10 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     .first<{ r2_key: string; filename: string; content_type: string | null }>();
   if (!meta) throw new Response("Not found", { status: 404 });
 
-  const obj = await env.UPLOADS.get(meta.r2_key);
+  const uploads = (env as Env & { UPLOADS?: R2Bucket }).UPLOADS;
+  if (!uploads) throw new Response("File storage is not configured", { status: 503 });
+
+  const obj = await uploads.get(meta.r2_key);
   if (!obj) throw new Response("File missing from storage", { status: 404 });
 
   return new Response(obj.body, {
