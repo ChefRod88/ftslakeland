@@ -75,6 +75,14 @@ export const applicationSchema = z.object({
 });
 export type ApplicationInput = z.infer<typeof applicationSchema>;
 
+export const LETTER_GRADES = ["A", "B", "C", "D", "F", "WP", "WF", "I"] as const;
+
+export const gradeEntrySchema = z.object({
+  enrollmentId: required("Student"),
+  letterGrade: z.enum(LETTER_GRADES, { message: "Choose a grade" }),
+});
+export type GradeEntryInput = z.infer<typeof gradeEntrySchema>;
+
 /** Turn a ZodError into `{ field: message }` for the form UI. */
 export function fieldErrors(err: z.ZodError): Record<string, string> {
   const out: Record<string, string> = {};

@@ -23,6 +23,7 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
           <NavLink to="/admin/applications">Applications</NavLink>
           <NavLink to="/admin/inquiries">Inquiries</NavLink>
           <NavLink to="/admin/sponsorships">Sponsorships</NavLink>
+          <NavLink to="/admin/grades">Grades</NavLink>
         </nav>
         <span className="admin-who">{loaderData.email}</span>
       </div>

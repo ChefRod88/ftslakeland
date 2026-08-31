@@ -28,6 +28,8 @@ export default [
       route("inquiries", "routes/admin/inquiries.tsx"),
       route("sponsorships", "routes/admin/sponsorships.tsx"),
       route("files/:id", "routes/admin/file.tsx"),
+      route("grades", "routes/admin/grades.tsx"),
+      route("grades/:sectionId", "routes/admin/grade-entry.tsx"),
     ]),
   ]),
 
