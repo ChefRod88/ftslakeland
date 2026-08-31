@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FTS — mockup contact sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..700&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1830; --brass:#C79A3F; --oxblood:#7A2029;
+  --bone:#F1EEE7; --bone-2:#E4DFD3; --body:#2C313C; --muted:#6A7183;
+  --display:"Fraunces",Georgia,serif;
+  --prose:"Spectral",Georgia,serif;
+  --util:"Barlow Condensed","Arial Narrow",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{margin:0;background:var(--bone);color:var(--body);
+  font-family:var(--prose);font-size:1.0625rem;line-height:1.7;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;}
+.wrap{max-width:900px;margin-inline:auto;padding:clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,5vw,2.5rem);}
+.eyebrow{font-family:var(--util);text-transform:uppercase;letter-spacing:.22em;
+  font-size:.8125rem;font-weight:600;color:var(--brass);margin:0 0 1rem;}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,2.9rem);
+  line-height:1.08;letter-spacing:-.015em;color:var(--ink);margin:0 0 1rem;}
+.intro{font-weight:300;color:#3B4150;max-width:60ch;margin:0 0 2.5rem;}
+.top-links{display:flex;flex-wrap:wrap;gap:.75rem;margin:0 0 3rem;
+  font-family:var(--util);text-transform:uppercase;letter-spacing:.14em;font-size:.8125rem;}
+.top-links a{text-decoration:none;color:var(--ink);border:1px solid rgba(14,24,48,.28);padding:.7rem 1.1rem;}
+.top-links a:hover{border-color:var(--ink);background:rgba(14,24,48,.05);}
+.top-links a.is-live{background:var(--ink);color:var(--bone);border-color:var(--ink);}
+.sheet{list-style:none;margin:0;padding:0;border-top:1px solid var(--bone-2);}
+.sheet li{border-bottom:1px solid var(--bone-2);}
+.sheet a{display:grid;grid-template-columns:12rem 1fr;gap:1.5rem;
+  padding:1.6rem .25rem;text-decoration:none;transition:background .2s ease,padding .2s ease;}
+.sheet a:hover{background:rgba(199,154,63,.08);padding-inline:1rem .25rem;}
+.sheet .nm{font-family:var(--display);font-size:1.3125rem;font-weight:600;color:var(--ink);line-height:1.2;}
+.sheet .file{display:block;font-family:var(--util);text-transform:uppercase;
+  letter-spacing:.14em;font-size:.75rem;color:var(--brass);margin-top:.35rem;}
+.sheet .desc{color:var(--muted);font-size:.9375rem;line-height:1.6;align-self:center;}
+@media (max-width:600px){
+  .sheet a{grid-template-columns:1fr;gap:.4rem;}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">Florida Theological Seminary &middot; internal</p>
+  <h1>Mockup contact sheet</h1>
+  <p class="intro">Every screen in this repo, one link per file. Same palette and type as the
+  live homepage; each screen tries a different structural idea rather than repeating the
+  homepage rhythm. Medium fidelity: real copy, real hierarchy, placeholder imagery and figures
+  where noted in <code>TODO.md</code>.</p>
+
+  <div class="top-links">
+    <a class="is-live" href="index.html">Live homepage &rarr;</a>
+    <a href="all-screens.html">All nine screens, stacked</a>
+  </div>
+
+  <ul class="sheet">
+    <li><a href="screens/programs.html">
+      <span><span class="nm">Programs</span><span class="file">screens/programs.html</span></span>
+      <span class="desc">Programs page, laid out as a registrar's ledger &mdash; rows with a spec column.</span>
+    </a></li>
+    <li><a href="screens/admissions.html">
+      <span><span class="nm">Admissions</span><span class="file">screens/admissions.html</span></span>
+      <span class="desc">Step one of the application inside the hero, plus a tuition table and FAQ.</span>
+    </a></li>
+    <li><a href="screens/history.html">
+      <span><span class="nm">Our History</span><span class="file">screens/history.html</span></span>
+      <span class="desc">Vertical timeline 1901&ndash;2026 with fire markers for the 1921 and 1927 fires.</span>
+    </a></li>
+    <li><a href="screens/accreditation.html">
+      <span><span class="nm">Accreditation</span><span class="file">screens/accreditation.html</span></span>
+      <span class="desc">Accreditation announcement landing page.</span>
+    </a></li>
+    <li><a href="screens/home-broadside.html">
+      <span><span class="nm">Homepage &mdash; broadside</span><span class="file">screens/home-broadside.html</span></span>
+      <span class="desc">Homepage direction A: large typographic broadside, no photo hero.</span>
+    </a></li>
+    <li><a href="screens/home-split.html">
+      <span><span class="nm">Homepage &mdash; split</span><span class="file">screens/home-split.html</span></span>
+      <span class="desc">Homepage direction B: full-bleed split, photo left / program index right.</span>
+    </a></li>
+    <li><a href="screens/portal.html">
+      <span><span class="nm">Student portal</span><span class="file">screens/portal.html</span></span>
+      <span class="desc">Logged-in student dashboard.</span>
+    </a></li>
+    <li><a href="screens/give.html">
+      <span><span class="nm">Give</span><span class="file">screens/give.html</span></span>
+      <span class="desc">Give page for donors and supporting churches.</span>
+    </a></li>
+    <li><a href="screens/mobile.html">
+      <span><span class="nm">Mobile</span><span class="file">screens/mobile.html</span></span>
+      <span class="desc">Three 390px mobile screens &mdash; homepage, programs list, portal.</span>
+    </a></li>
+  </ul>
+</main>
+</body>
+</html>

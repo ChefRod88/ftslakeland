@@ -1,0 +1,13 @@
+# Copy to `.dev.vars` for local development (git-ignored).
+# In production set these with: wrangler secret put NAME  (secrets)  /  wrangler.toml [vars]  (plain)
+
+# Overrides the production SITE_URL from wrangler.toml so resume links point at localhost.
+SITE_URL=http://localhost:5173
+
+# Resend transactional email (https://resend.com) API key.
+# If unset, emails are logged to the console instead of sent (dev still works).
+RESEND_API_KEY=
+
+# Cloudflare Turnstile secret. The always-passing test secret below is fine for local dev.
+# The matching PUBLIC site key lives in wrangler.toml [vars] TURNSTILE_SITE_KEY.
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

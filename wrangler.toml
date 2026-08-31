@@ -1,0 +1,45 @@
+name = "ftslakeland"
+main = "./workers/app.ts"
+compatibility_date = "2025-08-21"
+compatibility_flags = ["nodejs_compat"]
+
+# Static client build (CSS, JS, images) is served straight from the edge;
+# anything not matched falls through to the Worker for SSR.
+[assets]
+directory = "./build/client"
+
+[observability]
+enabled = true
+
+# ---------------------------------------------------------------------------
+# Plain vars (safe to commit). Secrets go in .dev.vars locally and
+# `wrangler secret put` in production — see .dev.vars.example.
+# ---------------------------------------------------------------------------
+[vars]
+SITE_URL = "https://ftslakeland.rodney-5e8.workers.dev"
+REGISTRAR_EMAIL = "fltheologicalseminary@gmail.com"
+FROM_EMAIL = "admissions@ftslakeland.org"
+# Turnstile site key is public. Test key below always passes; replace for prod.
+TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
+
+# ---------------------------------------------------------------------------
+# Bindings. IDs are placeholders — create the resources and paste real IDs:
+#   wrangler d1 create ftslakeland
+#   wrangler kv namespace create KV
+#   wrangler r2 bucket create ftslakeland-uploads
+# ---------------------------------------------------------------------------
+[[d1_databases]]
+binding = "DB"
+database_name = "ftslakeland"
+database_id = "bd332254-6f65-40dd-acc9-9847f0d1bff5"
+migrations_dir = "migrations"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "19a5d23964344324bb63f6378501f54c"
+
+# R2 is used only for optional application file uploads. Enable R2 in the
+# Cloudflare dashboard, create the bucket, then uncomment this block:
+# [[r2_buckets]]
+# binding = "UPLOADS"
+# bucket_name = "ftslakeland-uploads"

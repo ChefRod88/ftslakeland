@@ -1,0 +1,19 @@
+# Legacy mockup-catalog filenames -> semantic routes (301, permanent)
+/screens/1a-programs           /screens/programs        301
+/screens/1a-programs.html      /screens/programs        301
+/screens/1b-admissions        /screens/admissions       301
+/screens/1b-admissions.html   /screens/admissions       301
+/screens/1c-history           /screens/history          301
+/screens/1c-history.html      /screens/history          301
+/screens/1d-accreditation     /screens/accreditation    301
+/screens/1d-accreditation.html /screens/accreditation   301
+/screens/1e-home-broadside    /screens/home-broadside   301
+/screens/1e-home-broadside.html /screens/home-broadside 301
+/screens/1f-home-split        /screens/home-split       301
+/screens/1f-home-split.html   /screens/home-split       301
+/screens/1g-student-portal    /screens/portal           301
+/screens/1g-student-portal.html /screens/portal         301
+/screens/1h-give              /screens/give             301
+/screens/1h-give.html         /screens/give             301
+/screens/1i-mobile            /screens/mobile           301
+/screens/1i-mobile.html       /screens/mobile           301
